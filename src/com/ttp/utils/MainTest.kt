@@ -10,14 +10,14 @@ class MainTest {
 
     @Test
     fun empty_target_should_be_same_with_source() {
-        val result = getPaths("aaa", "")
+        val result = getPaths(File("aaa"), File(""))
         assertEquals(result.source, result.target)
     }
 
     @Test
     fun target과source가_다른_값으로_들어오면_각각을_사용한다() {
-        val source = "aaa";
-        val target = "bbb";
+        val source = File("aaa");
+        val target = File("bbb");
 
         val result = getPaths(source, target)
 
@@ -25,8 +25,12 @@ class MainTest {
         assertEquals(target, result.target)
     }
 
-    private fun getPaths(source: String, target: String): Paths {
-        return Paths(File(source), File(source))
+    private fun getPaths(source: File, target: File): Paths {
+        return when {
+            target.name.isEmpty() -> Paths(source, source)
+            !source.equals(target) -> Paths(source, target)
+            else -> throw RuntimeException("None of above")
+        }
     }
 
 
