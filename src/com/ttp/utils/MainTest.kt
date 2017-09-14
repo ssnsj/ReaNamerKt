@@ -6,6 +6,19 @@ import java.io.File
 import java.util.*
 
 class MainTest {
+    data class Paths(val source: File, val target: File)
+
+    @Test
+    fun empty_target_should_be_same_with_source() {
+        val result = getPaths("aaa", "")
+        assertEquals(result.source, result.target)
+    }
+
+    private fun getPaths(source: String, target: String): Paths {
+        return Paths(File(source), File(source))
+    }
+
+
     @Test
     fun renameBasic() {
         assertRename(expected = "res/drawable-mdpi/a.png", source = "", name = "a.png")
