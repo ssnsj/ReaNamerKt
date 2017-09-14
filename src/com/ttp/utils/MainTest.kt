@@ -36,10 +36,11 @@ class MainTest {
         assertEquals(result.source, result.target)
     }
 
-    private fun getCurrentPath() = File("./").canonicalPath
+    private fun getCurrentPath() = File("./").canonicalFile
 
     private fun getPaths(source: File, target: File): Paths {
         return when {
+            source.name.isEmpty() -> Paths(getCurrentPath(), getCurrentPath())
             target.name.isEmpty() -> Paths(source, source)
             !source.equals(target) -> Paths(source, target)
             else -> throw RuntimeException("None of above")
