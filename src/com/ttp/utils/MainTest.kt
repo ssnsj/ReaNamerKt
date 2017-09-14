@@ -50,13 +50,13 @@ class MainTest {
 
     @Test
     fun renameBasic() {
-        assertRename(expected = "res/drawable-mdpi/a.png", source = "", name = "a.png")
+        assertRename(expected = "res/drawable-mdpi/a.png", target = "", name = "a.png")
         assertRename("abc/res/drawable-mdpi/a.png", "abc", "a.png")
         assertRename("/abc/res/drawable-mdpi/a.png", "/abc", "a.png")
     }
 
-    private fun assertRename(expected: String, source: String, name: String) {
-        assertEquals(File(expected), rename(File(source), File(name)))
+    private fun assertRename(expected: String, target: String, name: String) {
+        assertEquals(File(expected), rename(File(target), File(name)))
     }
 
     @Test
