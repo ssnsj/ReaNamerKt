@@ -25,6 +25,19 @@ class MainTest {
         assertEquals(target, result.target)
     }
 
+    @Test
+    fun source가_없으면_현재폴더를_source로_사용한다() {
+        val source = File("");
+        val target = File("");
+
+        val result = getPaths(source, target)
+
+        assertEquals(getCurrentPath(), result.source)
+        assertEquals(result.source, result.target)
+    }
+
+    private fun getCurrentPath() = File("./").canonicalPath
+
     private fun getPaths(source: File, target: File): Paths {
         return when {
             target.name.isEmpty() -> Paths(source, source)
