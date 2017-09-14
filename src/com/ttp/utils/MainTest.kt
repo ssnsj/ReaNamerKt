@@ -14,6 +14,17 @@ class MainTest {
         assertEquals(result.source, result.target)
     }
 
+    @Test
+    fun target과source가_다른_값으로_들어오면_각각을_사용한다() {
+        val source = "aaa";
+        val target = "bbb";
+
+        val result = getPaths(source, target)
+
+        assertEquals(source, result.source)
+        assertEquals(target, result.target)
+    }
+
     private fun getPaths(source: String, target: String): Paths {
         return Paths(File(source), File(source))
     }
