@@ -73,21 +73,28 @@ class MainTest {
         assertRename("dfdfi/dfjk/res/drawable-xxxhdpi/dfsf.png", "dfdfi/dfjk", "dfsf@3x.png")
     }
 
-    private fun rename(source: File, file: File): File {
+    @Test
+    fun renameForAndroidResourceNameCapital() {
+        assertRename("res/drawable-xxxhdpi/a.png", "", "A@3x.png")
+    }
+
+    private fun rename(target: File, file: File): File {
         val replaceTable = Hashtable<String, String>()
         replaceTable.put("@2x", "xhdpi")
         replaceTable.put("@3x", "xxxhdpi")
 
+        var file = File(file.name.toLowerCase())
+
         for (key in replaceTable.keys) {
             if (key in file.name) {
-                val targetFolder = source.resolve("res/drawable-${replaceTable.get(key)}")
+                val targetFolder = target.resolve("res/drawable-${replaceTable.get(key)}")
                 val newFile = file.name.replace(key, "")
 
                 return targetFolder.resolve(newFile)
             }
         }
 
-        return source.resolve("res/drawable-mdpi").resolve(file)
+        return target.resolve("res/drawable-mdpi").resolve(file)
     }
 
 }
