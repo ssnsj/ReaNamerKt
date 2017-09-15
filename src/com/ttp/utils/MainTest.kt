@@ -88,7 +88,8 @@ class MainTest {
         replaceTable.put("@2x", "xhdpi")
         replaceTable.put("@3x", "xxxhdpi")
 
-        var file = File(file.name.toLowerCase())
+        var file = File(file.name.toLowerCase().replace("-", "_"))
+
 
         for (key in replaceTable.keys) {
             if (key in file.name) {
