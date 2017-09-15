@@ -78,6 +78,11 @@ class MainTest {
         assertRename("res/drawable-xxxhdpi/a.png", "", "A@3x.png")
     }
 
+    @Test
+    fun renameForAndroidResourceNameHyphen() {
+        assertRename("res/drawable-xxxhdpi/a_.png", "", "a-@3x.png")
+    }
+
     private fun rename(target: File, file: File): File {
         val replaceTable = Hashtable<String, String>()
         replaceTable.put("@2x", "xhdpi")
