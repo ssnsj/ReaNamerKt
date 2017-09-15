@@ -1,16 +1,23 @@
 package com.ttp.utils
 
 import org.junit.Assert.*
+import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import java.io.File
 import java.util.*
 
 class MainTest {
-    data class Paths(val source: File, val target: File)
+    lateinit var main: Main
+
+    @Before
+    fun initialize() {
+        main = Main()
+    }
 
     @Test
     fun empty_target_should_be_same_with_source() {
-        val result = getPaths(File("aaa"), File(""))
+        val result = main.getPaths(File("aaa"), File(""))
         assertEquals(result.source, result.target)
     }
 
@@ -19,7 +26,7 @@ class MainTest {
         val source = File("aaa");
         val target = File("bbb");
 
-        val result = getPaths(source, target)
+        val result = main.getPaths(source, target)
 
         assertEquals(source, result.source)
         assertEquals(target, result.target)
@@ -30,23 +37,11 @@ class MainTest {
         val source = File("");
         val target = File("");
 
-        val result = getPaths(source, target)
+        val result = main.getPaths(source, target)
 
-        assertEquals(getCurrentPath(), result.source)
+        assertEquals(main.getCurrentPath(), result.source)
         assertEquals(result.source, result.target)
     }
-
-    private fun getCurrentPath() = File("./").canonicalFile
-
-    private fun getPaths(source: File, target: File): Paths {
-        return when {
-            source.name.isEmpty() -> Paths(getCurrentPath(), getCurrentPath())
-            target.name.isEmpty() -> Paths(source, source)
-            !source.equals(target) -> Paths(source, target)
-            else -> throw RuntimeException("None of above")
-        }
-    }
-
 
     @Test
     fun renameBasic() {
@@ -56,7 +51,7 @@ class MainTest {
     }
 
     private fun assertRename(expected: String, target: String, name: String) {
-        assertEquals(File(expected), rename(File(target), File(name)))
+        assertEquals(File(expected), main.rename(File(target), File(name)))
     }
 
     @Test
@@ -83,24 +78,17 @@ class MainTest {
         assertRename("res/drawable-xxxhdpi/a_.png", "", "a-@3x.png")
     }
 
-    private fun rename(target: File, file: File): File {
-        val replaceTable = Hashtable<String, String>()
-        replaceTable.put("@2x", "xhdpi")
-        replaceTable.put("@3x", "xxxhdpi")
+    @Test
+    fun source폴더의_모든_파일들을_수집한다_하위폴더는_제외() {
 
-        var file = File(file.name.toLowerCase().replace("-", "_"))
+        var currentPath = File("./zeplin")
+        println("current:" + currentPath.canonicalPath)
 
+        val paths = main.getPaths(File("./zeplin"), File(""))
 
-        for (key in replaceTable.keys) {
-            if (key in file.name) {
-                val targetFolder = target.resolve("res/drawable-${replaceTable.get(key)}")
-                val newFile = file.name.replace(key, "")
+        val files = main.collectFiles(paths.source)
 
-                return targetFolder.resolve(newFile)
-            }
-        }
-
-        return target.resolve("res/drawable-mdpi").resolve(file)
+        main.processFiles(files)
     }
 
 }
