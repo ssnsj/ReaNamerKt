@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
 
 class Main {
 
-    data class Parameters(val runDry: Boolean, val paths: Paths)
+    data class Parameters(val dryRun: Boolean, val paths: Paths)
 
     var parameters = Parameters(true, Paths(File("./zeplin"), File("")))
 
@@ -85,7 +85,7 @@ class Main {
             val source = parameters.paths.source.resolve(name)
             val target = rename(parameters.paths.target, File(name))
 
-            if (parameters.runDry) {
+            if (parameters.dryRun) {
                 println("mv ${source.canonicalPath} ${target.canonicalPath}")
             }
         }
