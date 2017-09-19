@@ -5,7 +5,11 @@ import java.util.*
 
 
 fun main(args: Array<String>) {
-    Main.main()
+
+    var main = Main()
+
+    main.runWithArgs(args)
+
 }
 
 class Main {
@@ -24,6 +28,19 @@ class Main {
 //
 //        println("Current Path: $currentPath")
 
+    }
+
+    fun runWithArgs(args: Array<String>) {
+        val paths =
+                when {
+                    args.size > 1 -> getPaths(File(args[0]), File(args[1]))
+                    args.size == 1 -> getPaths(File(args[0]), File(""))
+                    else -> getPaths(File(""), File(""))
+                }
+
+        val files = collectFiles(paths.source)
+
+        processFiles(files)
     }
 
     fun collectFiles(path: File): Collection<String> {

@@ -6,6 +6,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 import java.io.File
 import java.util.*
+import kotlin.test.assertEquals
 
 class MainTest {
     lateinit var main: Main
